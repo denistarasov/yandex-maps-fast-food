@@ -23,14 +23,11 @@ def getData():
         rest.address = d['features'][i]['properties']['CompanyMetaData']['address']
         rest.coordinates = d['features'][i]['geometry']['coordinates']
         restaurants.append(rest)
-    # little debugging
-    for i in restaurants:
-        print(i.name, ', ')
-        print(i.address, ', ')
-        print(i.coordinates, ', \n')
-    print(number_of_search_results)
+    return restaurants 
 
-getData()
+restaurants = getData()
+for i in restaurants:
+    print(i.name + ', ' + i.address + ', ' + str(i.coordinates[0]) + str(i.coordinates[1]) + '\n')
 
 """
 ['features'][0]['properties']['CompanyMetaData']['Chains'][0]['name'] # name
