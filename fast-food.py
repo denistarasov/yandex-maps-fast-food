@@ -25,16 +25,16 @@ def getData():
         restaurants.append(rest)
     return restaurants 
 
+# using Yandex Maps Static API
+def constructMapURL(restaurants):
+    s = ''
+    for r in restaurants:
+        s += str(r.coordinates[0]) + ',' + str(r.coordinates[1]) + ',round~'
+    s = s[:-1] # delete last '~'
+    return 'https://static-maps.yandex.ru/1.x/?l=map&pt={}'.format(s)
+
 restaurants = getData()
-for i in restaurants:
-    print(i.name + ', ' + i.address + ', ' + str(i.coordinates[0]) + str(i.coordinates[1]) + '\n')
-
-"""
-['features'][0]['properties']['CompanyMetaData']['Chains'][0]['name'] # name
-['features'][0]['properties']['id'] # number
-['features'][0]['properties']['CompanyMetaData']['address'] # address
-['features'][0]['geometry'][0]['coordinates'] # coordinates
-
-['properties']['ResponseMetaData']['SearchRequest']['results'] # number of search results
-
-"""
+# little debugging
+# for i in restaurants:
+#    print(i.name + ', ' + i.address + ', ' + str(i.coordinates[0]) + str(i.coordinates[1]) + '\n')
+print(constructMapURL(restaurants))
