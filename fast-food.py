@@ -7,14 +7,15 @@ SEARCH_AREA_SIZE = '0.017,0.017'
 
 class Restaurant:
     name = '' # KFC, BK or MD
-    address = '' # e.g. Ленингрдаский проспект, 1
+    address = '' # e.g. Ленинградский проспект, 1
     coordinates = '' # e.g. 37.532889,55.800062
     def __init__(self, name, address, coordinates):
         self.name = name
         self.address = address
         self.coordinates = coordinates
 
-# using Yandex Maps Geocoder API
+# Using Yandex Maps Geocoder API
+# The function converts address string to coordinates
 def addressToPoint(address):
     url = 'https://geocode-maps.yandex.ru/1.x/?format=json&geocode=Москва,+{}'.format(address)
     req = requests.get(url)
@@ -22,7 +23,9 @@ def addressToPoint(address):
     coordinates = d['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos'] # e.g. 37.611347 55.760241
     return coordinates.replace(" ", ",") # '37.611347 55.760241' -> '37.611347,55.760241'
         
-# using Yandex Maps Organizations Search API
+# Using Yandex Maps Organizations Search API
+# The function receives brand name and returns a list
+# containing all found restaurants in the nearest area
 def getData(brand_name):
     url = 'https://search-maps.yandex.ru/v1/?results=9999&text={}&ll={}&spn={}&type=biz&lang=ru_RU&apikey={}'.format(brand_name, CENTRAL_POINT, SEARCH_AREA_SIZE, TOKEN_ID)
     req = requests.get(url)
@@ -45,7 +48,10 @@ def getData(brand_name):
             i += 1
             continue
 
-# using Yandex Maps Static API
+# Using Yandex Maps Static API
+# The function returns a link to a map which show
+# the closest restaurants
+# that were found with getData() function
 def constructMapURL(restaurants):
     s = ''
     for r in restaurants:
@@ -66,7 +72,9 @@ def constructMapURL(restaurants):
 
 ####################
 
-print('Введите свое местоположение. Пример: "Красная площадь". Если адрес некорректен, то точкой отсчета будет выбран пример')
+print('''This program searches the nearest fast-food restaurants to a certain location.
+Enter your location. E.g. ['красная площадь'].
+If address is not found, then the central point will be ['красная площадь']''')
 CENTRAL_POINT = addressToPoint(input())
 restaurants = []
 brand_names = ['макдоналдс', 'kfc', 'бургер кинг']
