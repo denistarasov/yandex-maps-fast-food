@@ -2,7 +2,7 @@ import json
 import requests
 
 class Fast_food:
-    def __init__(self, name, address, coordinates):
+    def __init__(self):
         print('''This program searches the nearest fast-food restaurants to a certain location.
 Enter your location. E.g. ['красная площадь'].
 If address is not found, then the central point will be ['красная площадь']''')
@@ -22,7 +22,7 @@ If address is not found, then the central point will be ['красная пло�
 
     # Using Yandex Maps Geocoder API
     # The function converts address string to coordinates
-    def addressToPoint(address):
+    def addressToPoint(self, address):
         url = 'https://geocode-maps.yandex.ru/1.x/?format=json&geocode=Москва,+{}'.format(address)
         req = requests.get(url)
         d = json.loads(req.text)
@@ -81,11 +81,11 @@ If address is not found, then the central point will be ['красная пло�
 
 ####################
 
-ff = Fast_food
+ff = Fast_food()
 ff.CENTRAL_POINT = ff.addressToPoint(input())
 restaurants = []
 brand_names = ['макдоналдс', 'kfc', 'бургер кинг']
-ff.getData(ff, brand_names[0])
-ff.getData(ff, brand_names[1])
-ff.getData(ff, brand_names[2])
-print(ff.constructMapURL(ff, restaurants))
+ff.getData(brand_names[0])
+ff.getData(brand_names[1])
+ff.getData(brand_names[2])
+print(ff.constructMapURL(restaurants))
